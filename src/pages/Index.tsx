@@ -1,13 +1,25 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from 'react';
+import AuthScreen from '@/components/AuthScreen';
+import AddFundingSource from '@/components/AddFundingSource';
+import WalletDashboard from '@/components/WalletDashboard';
 
 const Index = () => {
+  const [step, setStep] = useState<'auth' | 'funding' | 'dashboard'>('auth');
+
+  const handleAuthentication = () => {
+    setStep('funding');
+  };
+
+  const handleFundingComplete = () => {
+    setStep('dashboard');
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <>
+      {step === 'auth' && <AuthScreen onAuthenticate={handleAuthentication} />}
+      {step === 'funding' && <AddFundingSource onComplete={handleFundingComplete} />}
+      {step === 'dashboard' && <WalletDashboard />}
+    </>
   );
 };
 
