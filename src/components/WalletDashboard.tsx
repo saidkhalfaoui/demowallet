@@ -1,4 +1,4 @@
-import { CreditCard, ShieldCheck, ContactlessIcon } from 'lucide-react';
+import { CreditCard, ShieldCheck, ContactIcon } from 'lucide-react';
 
 const WalletDashboard = () => {
   return (
@@ -14,7 +14,7 @@ const WalletDashboard = () => {
             {/* Credit Card Design */}
             <div className="flex flex-col h-48 justify-between">
               <div className="flex justify-between items-start">
-                <ContactlessIcon className="text-white/70 w-8 h-8" />
+                <ContactIcon className="text-white/70 w-8 h-8" />
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded-full bg-yellow-400 opacity-70" />
                   <div className="w-4 h-4 rounded-full bg-yellow-400" />
