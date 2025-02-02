@@ -31,7 +31,7 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Button
               variant="outline"
-              className="p-8 flex flex-col items-center hover:bg-blue-700 transition-all"
+              className="h-32 p-4 flex flex-col items-center justify-center hover:bg-blue-700 transition-all"
               onClick={() => setMethod('tink')}
             >
               <img 
@@ -42,7 +42,7 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
             </Button>
             <Button
               variant="outline"
-              className="p-8 flex flex-col items-center hover:bg-blue-700 transition-all"
+              className="h-32 p-4 flex flex-col items-center justify-center hover:bg-blue-700 transition-all"
               onClick={() => setMethod('coinbase')}
             >
               <img 
@@ -53,7 +53,7 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
             </Button>
             <Button
               variant="outline"
-              className="p-8 flex flex-col items-center hover:bg-blue-700 transition-all pt-12"
+              className="h-32 p-4 flex flex-col items-center justify-center hover:bg-blue-700 transition-all"
               onClick={() => setMethod('paypal')}
             >
               <img 
