@@ -25,8 +25,8 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
 
   const handleTinkClick = () => {
     console.log('Initiating Tink redirect...');
-    // Redirect to Tink's VRP mandate page
-    window.location.href = 'https://link.tink.com/1.0/pay/vrp-mandate?client_id=e5ca99078f154a58854f5505aebfc6ac&consent_id=3f256508-dfbf-4d13-a8e5-0bb7d43af104&authorization_code=b657b993089049428f554d225049e8ee&redirect_uri=https://lovable.dev/projects/fb91051d-9e4d-4510-aeeb-63638d3a9575/callback';
+    // Redirect to Tink's VRP mandate page with the correct callback URL
+    window.location.href = `https://link.tink.com/1.0/pay/vrp-mandate?client_id=e5ca99078f154a58854f5505aebfc6ac&consent_id=3f256508-dfbf-4d13-a8e5-0bb7d43af104&authorization_code=b657b993089049428f554d225049e8ee&redirect_uri=${window.location.origin}/callback`;
   };
 
   console.log('Current selected method:', method);
