@@ -26,22 +26,21 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
   const handleTinkClick = () => {
     console.log('Initiating Tink redirect...');
     const callbackUrl = encodeURIComponent(`${window.location.origin}/callback`);
-    // Redirect to Tink's VRP mandate page with the correct callback URL
     window.location.href = `https://link.tink.com/1.0/pay/vrp-mandate?client_id=e5ca99078f154a58854f5505aebfc6ac&consent_id=2dcd7ccb-5bd1-463d-94e7-6f19bd6b0df4&authorization_code=b63ddb4e3a0047c59f1b9484cf19a850&redirect_uri=${callbackUrl}`;
   };
 
   console.log('Current selected method:', method);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#000000] p-4">
-      <div className="glass-card p-8 w-full max-w-md slide-up bg-[#222222] border-[#333333]">
-        <h2 className="text-2xl font-bold text-white mb-6 text-center">Connect Payment Method</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 to-blue-700 p-4">
+      <div className="bg-white rounded-2xl shadow-xl border border-blue-100 p-8 w-full max-w-md slide-up">
+        <h2 className="text-2xl font-bold text-blue-900 mb-6 text-center">Connect Payment Method</h2>
         
         {!method ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Button
               variant="outline"
-              className="h-32 p-4 flex flex-col items-center justify-center bg-[#333333] hover:bg-[#444444] border-[#555555] transition-all"
+              className="h-32 p-4 flex flex-col items-center justify-center bg-white hover:bg-blue-50 border-blue-200 transition-all"
               onClick={handleTinkClick}
             >
               <img 
@@ -52,7 +51,7 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
             </Button>
             <Button
               variant="outline"
-              className="h-32 p-4 flex flex-col items-center justify-center bg-[#333333] hover:bg-[#444444] border-[#555555] transition-all"
+              className="h-32 p-4 flex flex-col items-center justify-center bg-white hover:bg-blue-50 border-blue-200 transition-all"
               onClick={() => {
                 console.log('Selected Coinbase method');
                 setMethod('coinbase');
@@ -66,7 +65,7 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
             </Button>
             <Button
               variant="outline"
-              className="h-32 p-4 flex flex-col items-center justify-center bg-[#333333] hover:bg-[#444444] border-[#555555] transition-all"
+              className="h-32 p-4 flex flex-col items-center justify-center bg-white hover:bg-blue-50 border-blue-200 transition-all"
               onClick={() => {
                 console.log('Selected PayPal method');
                 setMethod('paypal');
@@ -83,23 +82,23 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
           <form onSubmit={handleSubmit} className="space-y-4">
             {method === 'coinbase' && (
               <div className="space-y-2">
-                <Label htmlFor="walletAddress" className="text-[#C8C8C9]">Wallet Address</Label>
+                <Label htmlFor="walletAddress" className="text-blue-900">Wallet Address</Label>
                 <Input 
                   id="walletAddress" 
                   placeholder="Enter your Coinbase wallet address" 
-                  className="bg-[#333333] border-[#555555] text-white placeholder-[#666666]"
+                  className="bg-white border-blue-200 text-blue-900 placeholder-blue-400"
                 />
               </div>
             )}
             
             {method === 'paypal' && (
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-[#C8C8C9]">PayPal Email</Label>
+                <Label htmlFor="email" className="text-blue-900">PayPal Email</Label>
                 <Input 
                   id="email" 
                   type="email" 
                   placeholder="Enter your PayPal email"
-                  className="bg-[#333333] border-[#555555] text-white placeholder-[#666666]"
+                  className="bg-white border-blue-200 text-blue-900 placeholder-blue-400"
                 />
               </div>
             )}
@@ -112,13 +111,13 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
                   console.log('Returning to method selection');
                   setMethod(null);
                 }} 
-                className="flex-1 bg-[#333333] hover:bg-[#444444] border-[#555555] text-white"
+                className="flex-1 bg-white hover:bg-blue-50 border-blue-200 text-blue-900"
               >
                 Back
               </Button>
               <Button 
                 type="submit" 
-                className="flex-1 bg-[#000000] hover:bg-[#222222] text-white border border-[#555555]"
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
               >
                 Connect {method?.charAt(0).toUpperCase() + method?.slice(1)}
               </Button>

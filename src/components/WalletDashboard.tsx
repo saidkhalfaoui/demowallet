@@ -4,13 +4,13 @@ const WalletDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 to-blue-700 p-4">
       <div className="max-w-md mx-auto">
-        <div className="glass-card p-6 slide-up">
+        <div className="bg-white rounded-2xl shadow-xl p-6 slide-up">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-white">My Wallet</h2>
-            <CreditCard className="text-blue-200" />
+            <h2 className="text-xl font-bold text-blue-900">My Wallet</h2>
+            <CreditCard className="text-blue-600" />
           </div>
           
-          <div className="bg-[#222222] rounded-xl p-6 mb-4 relative overflow-hidden">
+          <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-6 mb-4 relative overflow-hidden">
             {/* Credit Card Design */}
             <div className="flex flex-col h-48 justify-between">
               <div className="flex justify-between items-start">
@@ -43,7 +43,7 @@ const WalletDashboard = () => {
             </div>
           </div>
 
-          <div className="flex items-center justify-between text-blue-200">
+          <div className="flex items-center justify-between text-blue-600">
             <div className="flex items-center">
               <CreditCard className="mr-2" />
               <span>Virtual Card</span>
