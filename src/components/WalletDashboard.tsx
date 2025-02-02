@@ -7,14 +7,14 @@ const WalletDashboard = () => {
         <div className="bg-white rounded-2xl shadow-xl p-6 slide-up">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-blue-900">My Wallet</h2>
-            <CreditCard className="text-blue-600" />
+            <CreditCard className="text-blue-600 w-12 h-12" />
           </div>
           
           <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-6 mb-4 relative overflow-hidden">
             {/* Credit Card Design */}
             <div className="flex flex-col h-48 justify-between">
               <div className="flex justify-between items-start">
-                <ContactIcon className="text-white/70 w-8 h-8" />
+                <ContactIcon className="text-white/70 w-16 h-16" />
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded-full bg-yellow-400 opacity-70" />
                   <div className="w-4 h-4 rounded-full bg-yellow-400" />
@@ -45,10 +45,10 @@ const WalletDashboard = () => {
 
           <div className="flex items-center justify-between text-blue-600">
             <div className="flex items-center">
-              <CreditCard className="mr-2" />
+              <CreditCard className="mr-2 w-12 h-12" />
               <span>Virtual Card</span>
             </div>
-            <ShieldCheck className="text-green-400" />
+            <ShieldCheck className="text-green-400 w-12 h-12" />
           </div>
         </div>
       </div>

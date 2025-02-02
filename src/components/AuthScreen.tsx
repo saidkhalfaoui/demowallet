@@ -33,11 +33,11 @@ const AuthScreen = ({ onAuthenticate }: AuthScreenProps) => {
             <Button
               variant="outline"
               size="lg"
-              className="w-24 h-24 rounded-full bg-blue-800 hover:bg-blue-700 border-2 border-blue-400"
+              className="w-32 h-32 rounded-full bg-blue-800 hover:bg-blue-700 border-2 border-blue-400"
               onClick={handleAuth}
               disabled={authenticating}
             >
-              <Fingerprint className={`w-12 h-12 text-blue-200 ${authenticating ? 'animate-pulse' : ''}`} />
+              <Fingerprint className={`w-24 h-24 text-blue-200 ${authenticating ? 'animate-pulse' : ''}`} />
             </Button>
             <p className="text-blue-200 mt-4">
               {authenticating ? 'Authenticating...' : 'Touch to unlock'}
