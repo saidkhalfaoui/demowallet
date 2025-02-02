@@ -25,7 +25,7 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
 
   const handleTinkClick = () => {
     console.log('Initiating Tink redirect...');
-    window.location.href = `https://link.tink.com/1.0/pay/vrp-mandate?client_id=e5ca99078f154a58854f5505aebfc6ac&consent_id=f0d14e90-a7de-4e4c-bfea-8343cd7c3dfc&authorization_code=26fe78cbf15249d08deac79c91e9ef96&redirect_uri=fingerpay://callback`;
+    window.open(`https://link.tink.com/1.0/pay/vrp-mandate?client_id=e5ca99078f154a58854f5505aebfc6ac&consent_id=f0d14e90-a7de-4e4c-bfea-8343cd7c3dfc&authorization_code=26fe78cbf15249d08deac79c91e9ef96&redirect_uri=fingerpay://callback`, '_blank');
   };
 
   console.log('Current selected method:', method);
