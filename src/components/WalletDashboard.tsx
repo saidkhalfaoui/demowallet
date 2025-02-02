@@ -10,10 +10,10 @@ const WalletDashboard = () => {
             <CreditCard className="text-blue-600 w-12 h-12" />
           </div>
 
-          {/* Ready to Pay Status */}
+          {/* Ready to Tap Status */}
           <div className="flex items-center gap-2 mb-6 p-3 bg-green-50 rounded-lg">
             <CheckCircle2 className="text-green-500 w-6 h-6" />
-            <span className="text-green-700 font-medium">Ready to Pay</span>
+            <span className="text-green-700 font-medium">Ready to Tap</span>
           </div>
           
           <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-6 mb-4 relative overflow-hidden">
