@@ -1,4 +1,4 @@
-import { CreditCard, ShieldCheck, ContactIcon } from 'lucide-react';
+import { CreditCard, ShieldCheck, ContactIcon, CheckCircle2 } from 'lucide-react';
 
 const WalletDashboard = () => {
   return (
@@ -8,6 +8,12 @@ const WalletDashboard = () => {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-blue-900">My Wallet</h2>
             <CreditCard className="text-blue-600 w-12 h-12" />
+          </div>
+
+          {/* Ready to Pay Status */}
+          <div className="flex items-center gap-2 mb-6 p-3 bg-green-50 rounded-lg">
+            <CheckCircle2 className="text-green-500 w-6 h-6" />
+            <span className="text-green-700 font-medium">Ready to Pay</span>
           </div>
           
           <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-6 mb-4 relative overflow-hidden">
