@@ -23,7 +23,7 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
 
   const handleTinkClick = () => {
     // Redirect to Tink's VRP mandate page
-    window.location.href = 'https://link.tink.com/1.0/pay/vrp-mandate/?client_id=e5ca99078f154a58854f5505aebfc6ac&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fcallback&market=GB&locale=en_US';
+    window.location.href = 'https://link.tink.com/1.0/pay/vrp-mandate/?client_id=e5ca99078f154a58854f5505aebfc6ac&redirect_uri=https%3A%2F%2Flovable.dev%2Fprojects%2Ffb91051d-9e4d-4510-aeeb-63638d3a9575%2Fcallback&market=GB&locale=en_US';
   };
 
   return (
