@@ -49,11 +49,7 @@ const WalletDashboard = () => {
             </div>
           </div>
 
-          <div className="flex items-center justify-between text-blue-600">
-            <div className="flex items-center">
-              <CreditCard className="mr-2 w-12 h-12" />
-              <span>Virtual Card</span>
-            </div>
+          <div className="flex items-center justify-end">
             <ShieldCheck className="text-green-400 w-12 h-12" />
           </div>
         </div>
