@@ -11,6 +11,7 @@ interface AddFundingSourceProps {
 
 const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
   const [method, setMethod] = useState<'tink' | 'coinbase' | 'paypal' | null>(null);
+  const [showVRPForm, setShowVRPForm] = useState(false);
   const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -20,6 +21,11 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
       description: `Your ${method} account has been successfully connected.`,
     });
     onComplete();
+  };
+
+  const handleTinkClick = () => {
+    setMethod('tink');
+    setShowVRPForm(true);
   };
 
   return (
@@ -32,7 +38,7 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
             <Button
               variant="outline"
               className="h-32 p-4 flex flex-col items-center justify-center hover:bg-blue-700 transition-all"
-              onClick={() => setMethod('tink')}
+              onClick={handleTinkClick}
             >
               <img 
                 src="/lovable-uploads/6ae1cae6-4d1b-4607-b173-7adea608f825.png" 
@@ -63,15 +69,38 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
               />
             </Button>
           </div>
+        ) : method === 'tink' && showVRPForm ? (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="maxAmount" className="text-white">Maximum Payment Amount</Label>
+              <Input id="maxAmount" type="number" placeholder="Enter maximum amount" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="frequency" className="text-white">Payment Frequency</Label>
+              <select id="frequency" className="w-full p-2 rounded-md border border-gray-300">
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="yearly">Yearly</option>
+              </select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="duration" className="text-white">Agreement Duration</Label>
+              <Input id="duration" type="number" placeholder="Number of months" />
+            </div>
+            <div className="flex gap-4 pt-4">
+              <Button type="button" variant="outline" onClick={() => {
+                setMethod(null);
+                setShowVRPForm(false);
+              }} className="flex-1">
+                Back
+              </Button>
+              <Button type="submit" className="flex-1">
+                Set Up VRP
+              </Button>
+            </div>
+          </form>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
-            {method === 'tink' && (
-              <div className="space-y-2">
-                <Label htmlFor="bankName" className="text-white">Bank Name</Label>
-                <Input id="bankName" placeholder="Select your bank" />
-              </div>
-            )}
-            
             {method === 'coinbase' && (
               <div className="space-y-2">
                 <Label htmlFor="walletAddress" className="text-white">Wallet Address</Label>
