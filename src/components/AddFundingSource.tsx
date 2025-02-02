@@ -32,15 +32,15 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
   console.log('Current selected method:', method);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 to-blue-700 p-4">
-      <div className="glass-card p-8 w-full max-w-md slide-up">
-        <h2 className="text-2xl font-bold text-white mb-6 text-center">Connect to Your Money</h2>
+    <div className="min-h-screen flex items-center justify-center bg-[#000000] p-4">
+      <div className="glass-card p-8 w-full max-w-md slide-up bg-[#222222] border-[#333333]">
+        <h2 className="text-2xl font-bold text-white mb-6 text-center">Connect Payment Method</h2>
         
         {!method ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Button
               variant="outline"
-              className="h-32 p-4 flex flex-col items-center justify-center hover:bg-blue-700 transition-all"
+              className="h-32 p-4 flex flex-col items-center justify-center bg-[#333333] hover:bg-[#444444] border-[#555555] transition-all"
               onClick={handleTinkClick}
             >
               <img 
@@ -51,7 +51,7 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
             </Button>
             <Button
               variant="outline"
-              className="h-32 p-4 flex flex-col items-center justify-center hover:bg-blue-700 transition-all"
+              className="h-32 p-4 flex flex-col items-center justify-center bg-[#333333] hover:bg-[#444444] border-[#555555] transition-all"
               onClick={() => {
                 console.log('Selected Coinbase method');
                 setMethod('coinbase');
@@ -65,7 +65,7 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
             </Button>
             <Button
               variant="outline"
-              className="h-32 p-4 flex flex-col items-center justify-center hover:bg-blue-700 transition-all"
+              className="h-32 p-4 flex flex-col items-center justify-center bg-[#333333] hover:bg-[#444444] border-[#555555] transition-all"
               onClick={() => {
                 console.log('Selected PayPal method');
                 setMethod('paypal');
@@ -82,15 +82,24 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
           <form onSubmit={handleSubmit} className="space-y-4">
             {method === 'coinbase' && (
               <div className="space-y-2">
-                <Label htmlFor="walletAddress" className="text-white">Wallet Address</Label>
-                <Input id="walletAddress" placeholder="Enter your Coinbase wallet address" />
+                <Label htmlFor="walletAddress" className="text-[#C8C8C9]">Wallet Address</Label>
+                <Input 
+                  id="walletAddress" 
+                  placeholder="Enter your Coinbase wallet address" 
+                  className="bg-[#333333] border-[#555555] text-white placeholder-[#666666]"
+                />
               </div>
             )}
             
             {method === 'paypal' && (
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-white">PayPal Email</Label>
-                <Input id="email" type="email" placeholder="Enter your PayPal email" />
+                <Label htmlFor="email" className="text-[#C8C8C9]">PayPal Email</Label>
+                <Input 
+                  id="email" 
+                  type="email" 
+                  placeholder="Enter your PayPal email"
+                  className="bg-[#333333] border-[#555555] text-white placeholder-[#666666]"
+                />
               </div>
             )}
             
@@ -102,11 +111,14 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
                   console.log('Returning to method selection');
                   setMethod(null);
                 }} 
-                className="flex-1"
+                className="flex-1 bg-[#333333] hover:bg-[#444444] border-[#555555] text-white"
               >
                 Back
               </Button>
-              <Button type="submit" className="flex-1">
+              <Button 
+                type="submit" 
+                className="flex-1 bg-[#000000] hover:bg-[#222222] text-white border border-[#555555]"
+              >
                 Connect {method?.charAt(0).toUpperCase() + method?.slice(1)}
               </Button>
             </div>
