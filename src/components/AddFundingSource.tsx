@@ -37,9 +37,8 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
               <img 
                 src="/lovable-uploads/6ae1cae6-4d1b-4607-b173-7adea608f825.png" 
                 alt="Tink Logo" 
-                className="w-12 h-12 mb-2 object-contain"
+                className="w-16 h-16 object-contain"
               />
-              <span>Tink</span>
             </Button>
             <Button
               variant="outline"
