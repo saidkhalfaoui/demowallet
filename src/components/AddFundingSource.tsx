@@ -45,8 +45,11 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
               className="p-8 flex flex-col items-center hover:bg-blue-700 transition-all"
               onClick={() => setMethod('coinbase')}
             >
-              <CreditCard className="w-8 h-8 mb-2" />
-              <span>Coinbase</span>
+              <img 
+                src="/lovable-uploads/5281bc9f-75dc-4993-b617-58f483631369.png" 
+                alt="Coinbase Logo" 
+                className="w-32 object-contain"
+              />
             </Button>
             <Button
               variant="outline"
