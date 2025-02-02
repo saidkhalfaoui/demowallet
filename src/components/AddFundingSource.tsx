@@ -13,18 +13,23 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
   const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
+    console.log('Handling form submission for method:', method);
     e.preventDefault();
     toast({
       title: "Funding Source Added",
       description: `Your ${method} account has been successfully connected.`,
     });
+    console.log('Form submission complete, calling onComplete callback');
     onComplete();
   };
 
   const handleTinkClick = () => {
+    console.log('Initiating Tink redirect...');
     // Redirect to Tink's VRP mandate page
     window.location.href = 'https://link.tink.com/1.0/pay/vrp-mandate?client_id=e5ca99078f154a58854f5505aebfc6ac&consent_id=3f256508-dfbf-4d13-a8e5-0bb7d43af104&authorization_code=b657b993089049428f554d225049e8ee&redirect_uri=https://lovable.dev/projects/fb91051d-9e4d-4510-aeeb-63638d3a9575/callback';
   };
+
+  console.log('Current selected method:', method);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 to-blue-700 p-4">
@@ -47,7 +52,10 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
             <Button
               variant="outline"
               className="h-32 p-4 flex flex-col items-center justify-center hover:bg-blue-700 transition-all"
-              onClick={() => setMethod('coinbase')}
+              onClick={() => {
+                console.log('Selected Coinbase method');
+                setMethod('coinbase');
+              }}
             >
               <img 
                 src="/lovable-uploads/5281bc9f-75dc-4993-b617-58f483631369.png" 
@@ -58,7 +66,10 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
             <Button
               variant="outline"
               className="h-32 p-4 flex flex-col items-center justify-center hover:bg-blue-700 transition-all"
-              onClick={() => setMethod('paypal')}
+              onClick={() => {
+                console.log('Selected PayPal method');
+                setMethod('paypal');
+              }}
             >
               <img 
                 src="/lovable-uploads/248c64b9-c58f-469b-b111-47880f0f85fe.png" 
@@ -84,7 +95,15 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
             )}
             
             <div className="flex gap-4 pt-4">
-              <Button type="button" variant="outline" onClick={() => setMethod(null)} className="flex-1">
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={() => {
+                  console.log('Returning to method selection');
+                  setMethod(null);
+                }} 
+                className="flex-1"
+              >
                 Back
               </Button>
               <Button type="submit" className="flex-1">
