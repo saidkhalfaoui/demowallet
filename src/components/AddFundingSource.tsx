@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CreditCard, Wallet } from 'lucide-react';
+import { CreditCard } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -54,7 +54,11 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
               className="p-8 flex flex-col items-center hover:bg-blue-700 transition-all"
               onClick={() => setMethod('paypal')}
             >
-              <Wallet className="w-8 h-8 mb-2" />
+              <img 
+                src="/lovable-uploads/248c64b9-c58f-469b-b111-47880f0f85fe.png" 
+                alt="PayPal Logo" 
+                className="w-12 h-12 mb-2 object-contain"
+              />
               <span>PayPal</span>
             </Button>
           </div>
