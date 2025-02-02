@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Building, CreditCard, Wallet } from 'lucide-react';
+import { CreditCard, Wallet } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -34,7 +34,11 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
               className="p-8 flex flex-col items-center hover:bg-blue-700 transition-all"
               onClick={() => setMethod('tink')}
             >
-              <Building className="w-8 h-8 mb-2" />
+              <img 
+                src="/lovable-uploads/6ae1cae6-4d1b-4607-b173-7adea608f825.png" 
+                alt="Tink Logo" 
+                className="w-8 h-8 mb-2 object-contain"
+              />
               <span>Tink</span>
               <span className="text-xs text-gray-300 mt-1">Bank Account</span>
             </Button>
