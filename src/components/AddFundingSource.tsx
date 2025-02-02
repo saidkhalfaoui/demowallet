@@ -37,10 +37,9 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
               <img 
                 src="/lovable-uploads/6ae1cae6-4d1b-4607-b173-7adea608f825.png" 
                 alt="Tink Logo" 
-                className="w-8 h-8 mb-2 object-contain"
+                className="w-12 h-12 mb-2 object-contain"
               />
               <span>Tink</span>
-              <span className="text-xs text-gray-300 mt-1">Bank Account</span>
             </Button>
             <Button
               variant="outline"
@@ -49,7 +48,6 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
             >
               <CreditCard className="w-8 h-8 mb-2" />
               <span>Coinbase</span>
-              <span className="text-xs text-gray-300 mt-1">Crypto Wallet</span>
             </Button>
             <Button
               variant="outline"
@@ -58,7 +56,6 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
             >
               <Wallet className="w-8 h-8 mb-2" />
               <span>PayPal</span>
-              <span className="text-xs text-gray-300 mt-1">Digital Wallet</span>
             </Button>
           </div>
         ) : (
