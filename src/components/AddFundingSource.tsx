@@ -51,15 +51,14 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
             </Button>
             <Button
               variant="outline"
-              className="p-8 flex flex-col items-center hover:bg-blue-700 transition-all"
+              className="p-8 flex flex-col items-center hover:bg-blue-700 transition-all pt-12"
               onClick={() => setMethod('paypal')}
             >
               <img 
                 src="/lovable-uploads/248c64b9-c58f-469b-b111-47880f0f85fe.png" 
                 alt="PayPal Logo" 
-                className="w-12 h-12 mb-2 object-contain"
+                className="w-12 h-12 object-contain"
               />
-              <span>PayPal</span>
             </Button>
           </div>
         ) : (
