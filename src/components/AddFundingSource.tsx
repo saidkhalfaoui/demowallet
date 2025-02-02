@@ -34,7 +34,7 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 to-blue-700 p-4">
       <div className="bg-white rounded-2xl shadow-xl border border-blue-100 p-8 w-full max-w-md slide-up">
-        <h2 className="text-2xl font-bold text-blue-900 mb-6 text-center">Connect Payment Method</h2>
+        <h2 className="text-2xl font-bold text-blue-900 mb-6 text-center">Let's Connect your Wallet</h2>
         
         {!method ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
