@@ -22,8 +22,8 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
   };
 
   const handleTinkClick = () => {
-    // Redirect to Tink's authentication page
-    window.location.href = 'https://link.tink.com/1.0/transactions/connect-accounts/?client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&market=EU&locale=en_US';
+    // Redirect to Tink's VRP mandate page
+    window.location.href = 'https://link.tink.com/1.0/pay/vrp-mandate/?client_id=e5ca99078f154a58854f5505aebfc6ac&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fcallback&market=GB&locale=en_US';
   };
 
   return (
