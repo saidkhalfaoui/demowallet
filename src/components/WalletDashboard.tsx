@@ -1,28 +1,63 @@
 import { CreditCard, ShieldCheck, ContactIcon, CheckCircle2, Check } from 'lucide-react';
 import { useState } from 'react';
+import { useToast } from "@/hooks/use-toast";
 
 const WalletDashboard = () => {
+  const [mandateStatus, setMandateStatus] = useState<'pending' | 'completed'>('pending');
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
+  const [paymentAmount, setPaymentAmount] = useState<string>('');
+  const { toast } = useToast();
+
+  // Simulating webhook handling - in a real app, this would be called by your backend
+  const handleWebhookEvent = (eventType: 'mandate.completed' | 'payment.completed', data?: { amount?: string }) => {
+    switch (eventType) {
+      case 'mandate.completed':
+        setMandateStatus('completed');
+        toast({
+          title: "Mandate Setup Complete",
+          description: "Your card is now ready for payments",
+        });
+        break;
+      case 'payment.completed':
+        if (data?.amount) {
+          setPaymentAmount(data.amount);
+          setShowPaymentSuccess(true);
+          toast({
+            title: "Payment Successful",
+            description: `Payment of ${data.amount} has been processed`,
+          });
+          // Auto-hide the success message after 3 seconds
+          setTimeout(() => setShowPaymentSuccess(false), 3000);
+        }
+        break;
+    }
+  };
 
   const handleCardClick = () => {
-    setShowPaymentSuccess(true);
-    // Auto-hide the success message after 3 seconds
-    setTimeout(() => setShowPaymentSuccess(false), 3000);
+    // Simulate a payment completion webhook event
+    handleWebhookEvent('payment.completed', { amount: '€10.00' });
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 to-blue-700 p-4">
       <div className="max-w-md mx-auto">
         <div className="bg-white rounded-2xl shadow-xl p-6 slide-up">
-          {/* Ready to Tap Status */}
-          <div className="flex items-center gap-2 mb-6 p-3 bg-green-50 rounded-lg">
-            <CheckCircle2 className="text-green-500 w-6 h-6" />
-            <span className="text-green-700 font-medium">Ready to Tap</span>
-          </div>
+          {/* Mandate Status */}
+          {mandateStatus === 'completed' ? (
+            <div className="flex items-center gap-2 mb-6 p-3 bg-green-50 rounded-lg">
+              <CheckCircle2 className="text-green-500 w-6 h-6" />
+              <span className="text-green-700 font-medium">Ready to Tap</span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 mb-6 p-3 bg-yellow-50 rounded-lg">
+              <CheckCircle2 className="text-yellow-500 w-6 h-6" />
+              <span className="text-yellow-700 font-medium">Setting up mandate...</span>
+            </div>
+          )}
           
           <div 
-            className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-6 mb-4 relative overflow-hidden cursor-pointer"
-            onClick={handleCardClick}
+            className={`bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl p-6 mb-4 relative overflow-hidden ${mandateStatus === 'completed' ? 'cursor-pointer' : 'opacity-75'}`}
+            onClick={mandateStatus === 'completed' ? handleCardClick : undefined}
           >
             {/* Credit Card Design */}
             <div className="flex flex-col h-48 justify-between">
@@ -68,7 +103,7 @@ const WalletDashboard = () => {
                   <Check className="w-24 h-24 text-green-500" />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-800 mb-2">Payment Successful!</h2>
-                <p className="text-gray-600 mb-4">€10.00 has been processed</p>
+                <p className="text-gray-600 mb-4">{paymentAmount} has been processed</p>
               </div>
             </div>
           )}
