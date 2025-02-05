@@ -1,6 +1,7 @@
 import { CreditCard, ShieldCheck, ContactIcon, CheckCircle2, Check } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
 
 const WalletDashboard = () => {
   const [mandateStatus, setMandateStatus] = useState<'pending' | 'completed'>('pending');
@@ -10,6 +11,7 @@ const WalletDashboard = () => {
 
   // Simulating webhook handling - in a real app, this would be called by your backend
   const handleWebhookEvent = (eventType: 'mandate.completed' | 'payment.completed', data?: { amount?: string }) => {
+    console.log('Webhook event received:', eventType, data);
     switch (eventType) {
       case 'mandate.completed':
         setMandateStatus('completed');
@@ -38,9 +40,35 @@ const WalletDashboard = () => {
     handleWebhookEvent('payment.completed', { amount: '€10.00' });
   };
 
+  // Test buttons for mobile
+  const simulateMandateCompletion = () => {
+    handleWebhookEvent('mandate.completed');
+  };
+
+  const simulatePayment = () => {
+    handleWebhookEvent('payment.completed', { amount: '€25.00' });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 to-blue-700 p-4">
       <div className="max-w-md mx-auto">
+        {/* Test Buttons */}
+        <div className="mb-4 space-y-2">
+          <Button 
+            onClick={simulateMandateCompletion}
+            className="w-full bg-yellow-500 hover:bg-yellow-600"
+          >
+            Simulate Mandate Completion
+          </Button>
+          <Button 
+            onClick={simulatePayment}
+            className="w-full"
+            disabled={mandateStatus !== 'completed'}
+          >
+            Simulate €25 Payment
+          </Button>
+        </div>
+
         <div className="bg-white rounded-2xl shadow-xl p-6 slide-up">
           {/* Mandate Status */}
           {mandateStatus === 'completed' ? (
