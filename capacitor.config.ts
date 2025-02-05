@@ -5,8 +5,7 @@ const config: CapacitorConfig = {
   appName: 'Wallet Dashboard',
   webDir: 'dist',
   server: {
-    url: 'https://fb91051d-9e4d-4510-aeeb-63638d3a9575.lovableproject.com?forceHideBadge=true',
-    cleartext: true
+    androidScheme: 'http'
   }
 };
 
