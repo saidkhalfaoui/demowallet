@@ -19,10 +19,11 @@ const MandateSetupWindow = ({ onClose, onComplete }: MandateSetupWindowProps) =>
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer e5ca99078f154a58854f5505aebfc6ac' // Your client access token
+          'Authorization': 'Bearer e5ca99078f154a58854f5505aebfc6ac',
+          'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify({
-          external_user_id: `user_${Date.now()}`, // Generate unique user ID
+          external_user_id: `user_${Date.now()}`,
           market: 'GB',
           locale: 'en_US'
         })
@@ -42,7 +43,8 @@ const MandateSetupWindow = ({ onClose, onComplete }: MandateSetupWindowProps) =>
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer e5ca99078f154a58854f5505aebfc6ac'
+          'Authorization': 'Bearer e5ca99078f154a58854f5505aebfc6ac',
+          'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify({
           user_id: userId,
@@ -65,7 +67,8 @@ const MandateSetupWindow = ({ onClose, onComplete }: MandateSetupWindowProps) =>
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer e5ca99078f154a58854f5505aebfc6ac'
+          'Authorization': 'Bearer e5ca99078f154a58854f5505aebfc6ac',
+          'Access-Control-Allow-Origin': '*'
         },
         body: JSON.stringify({
           user_id: userId,
