@@ -1,8 +1,10 @@
+
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import MandateSetupWindow from './MandateSetupWindow';
 
 interface AddFundingSourceProps {
   onComplete: () => void;
@@ -10,6 +12,7 @@ interface AddFundingSourceProps {
 
 const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
   const [method, setMethod] = useState<'tink' | 'coinbase' | 'paypal' | null>(null);
+  const [showMandateSetup, setShowMandateSetup] = useState(false);
   const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -24,8 +27,16 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
   };
 
   const handleTinkClick = () => {
-    console.log('Initiating Tink redirect...');
-    window.open(`https://link.tink.com/1.0/pay/vrp-mandate?client_id=e5ca99078f154a58854f5505aebfc6ac&consent_id=f0d14e90-a7de-4e4c-bfea-8343cd7c3dfc&authorization_code=242a504a8f9b4a029ea40270e8b68c92&redirect_uri=fingerpay://callback`, '_blank');
+    console.log('Opening mandate setup window...');
+    setShowMandateSetup(true);
+  };
+
+  const handleMandateComplete = () => {
+    setShowMandateSetup(false);
+    toast({
+      title: "VRP Setup Initiated",
+      description: "Please complete the process in your bank's website",
+    });
   };
 
   console.log('Current selected method:', method);
@@ -122,6 +133,14 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
               </Button>
             </div>
           </form>
+        )}
+
+        {/* Mandate Setup Window */}
+        {showMandateSetup && (
+          <MandateSetupWindow
+            onClose={() => setShowMandateSetup(false)}
+            onComplete={handleMandateComplete}
+          />
         )}
       </div>
     </div>
