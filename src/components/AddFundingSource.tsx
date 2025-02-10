@@ -55,6 +55,7 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
               onClick={handleTinkClick}
             >
               <Building className="w-16 h-16 text-blue-600" />
+              <span className="mt-2 text-sm text-blue-600">Bank Account</span>
             </Button>
             <Button
               variant="outline"

@@ -1,5 +1,5 @@
 
-import { X } from "lucide-react";
+import { X, Building } from "lucide-react";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { useToast } from "./ui/use-toast";
@@ -127,7 +127,10 @@ const MandateSetupWindow = ({ onClose, onComplete }: MandateSetupWindowProps) =>
         </button>
 
         <div className="space-y-6">
-          <h2 className="text-2xl font-bold text-blue-900">Setup Variable Recurring Payment</h2>
+          <div className="flex items-center gap-3">
+            <Building className="w-8 h-8 text-blue-600" />
+            <h2 className="text-2xl font-bold text-blue-900">Setup Variable Recurring Payment</h2>
+          </div>
           
           <div className="space-y-4">
             <div className="bg-blue-50 p-4 rounded-lg">
@@ -140,7 +143,7 @@ const MandateSetupWindow = ({ onClose, onComplete }: MandateSetupWindowProps) =>
             <div className="space-y-2">
               <h3 className="font-semibold text-gray-900">Steps to complete:</h3>
               <ol className="list-decimal pl-5 space-y-2 text-gray-700">
-                <li>Connect your bank account securely through Tink</li>
+                <li>Connect your bank account securely</li>
                 <li>Review and authorize the VRP mandate</li>
                 <li>Confirm the setup with your bank</li>
               </ol>
