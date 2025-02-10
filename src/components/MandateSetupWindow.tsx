@@ -15,7 +15,7 @@ const MandateSetupWindow = ({ onClose, onComplete }: MandateSetupWindowProps) =>
   const { toast } = useToast();
 
   const banks = [
-    { name: "Emirates NBD", logo: "/lovable-uploads/6ae1cae6-4d1b-4607-b173-7adea608f825.png" },
+    { name: "Emirates NBD", logo: "/lovable-uploads/5ebaa0bf-8c67-417f-a820-30b9e5accdda.png" },
     { name: "Abu Dhabi Commercial Bank", logo: "/lovable-uploads/6ae1cae6-4d1b-4607-b173-7adea608f825.png" },
     { name: "Dubai Islamic Bank", logo: "/lovable-uploads/6ae1cae6-4d1b-4607-b173-7adea608f825.png" },
     { name: "First Abu Dhabi Bank", logo: "/lovable-uploads/6ae1cae6-4d1b-4607-b173-7adea608f825.png" },
