@@ -17,7 +17,7 @@ const MandateSetupWindow = ({ onClose, onComplete }: MandateSetupWindowProps) =>
   const banks = [
     { name: "Emirates NBD", logo: "/lovable-uploads/5ebaa0bf-8c67-417f-a820-30b9e5accdda.png" },
     { name: "Abu Dhabi Commercial Bank", logo: "/lovable-uploads/12dd1ad3-fa42-4c00-8235-48f81f6da286.png" },
-    { name: "Dubai Islamic Bank", logo: "/lovable-uploads/6ae1cae6-4d1b-4607-b173-7adea608f825.png" },
+    { name: "Dubai Islamic Bank", logo: "/lovable-uploads/b20af39f-5842-4bb4-9cd4-5eacdd5dbf67.png" },
     { name: "First Abu Dhabi Bank", logo: "/lovable-uploads/6ae1cae6-4d1b-4607-b173-7adea608f825.png" },
     { name: "Mashreq Bank", logo: "/lovable-uploads/6ae1cae6-4d1b-4607-b173-7adea608f825.png" },
   ];
