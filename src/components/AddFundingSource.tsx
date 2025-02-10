@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import MandateSetupWindow from './MandateSetupWindow';
+import { Building } from 'lucide-react';
 
 interface AddFundingSourceProps {
   onComplete: () => void;
@@ -53,11 +54,7 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
               className="h-32 p-4 flex flex-col items-center justify-center bg-white hover:bg-blue-50 border-blue-200 transition-all"
               onClick={handleTinkClick}
             >
-              <img 
-                src="/lovable-uploads/6ae1cae6-4d1b-4607-b173-7adea608f825.png" 
-                alt="Tink Logo" 
-                className="w-16 h-16 object-contain"
-              />
+              <Building className="w-16 h-16 text-blue-600" />
             </Button>
             <Button
               variant="outline"
