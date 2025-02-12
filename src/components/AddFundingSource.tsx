@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import MandateSetupWindow from './MandateSetupWindow';
+import { Building } from 'lucide-react';
 
 interface AddFundingSourceProps {
   onComplete: () => void;
@@ -53,12 +54,7 @@ const AddFundingSource = ({ onComplete }: AddFundingSourceProps) => {
               className="h-32 p-4 flex flex-col items-center justify-center bg-white hover:bg-blue-50 border-blue-200 transition-all"
               onClick={handleTinkClick}
             >
-              <img 
-                src="/lovable-uploads/a2ae7985-e59a-46a9-bb58-345cc13204b9.png" 
-                alt="Aani Logo" 
-                className="w-20 h-20 object-contain mb-2"
-              />
-              <span className="mt-2 text-sm text-blue-600">Bank Account</span>
+              <Building className="w-16 h-16 text-blue-600" />
             </Button>
             <Button
               variant="outline"
