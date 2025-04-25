@@ -1,50 +1,78 @@
-package de.androidcrypto.android_hce_emulate_a_creditcard;
+package dev.lovable.fb91051d9e4d4510aeeb63638d3a9575;
 
-import static de.androidcrypto.android_hce_emulate_a_creditcard.Utils.bytesToHexNpe;
-import static de.androidcrypto.android_hce_emulate_a_creditcard.Utils.concatenateByteArrays;
-import static de.androidcrypto.android_hce_emulate_a_creditcard.Utils.hexStringToByteArray;
+import static android.content.ContentValues.TAG;
+import static dev.lovable.fb91051d9e4d4510aeeb63638d3a9575.Utils.bytesToHexNpe;
+import static dev.lovable.fb91051d9e4d4510aeeb63638d3a9575.Utils.concatenateByteArrays;
+import static dev.lovable.fb91051d9e4d4510aeeb63638d3a9575.Utils.hexStringToByteArray;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.nfc.cardemulation.HostApduService;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import com.getcapacitor.Bridge;
+import com.getcapacitor.BridgeActivity;
+import com.getcapacitor.PluginCall;
+import com.getcapacitor.JSObject;
+import dev.lovable.fb91051d9e4d4510aeeb63638d3a9575.NFCTransactionPlugin;
+import kotlin.text.HexFormat;
 
-import java.io.IOException;
-import java.math.BigInteger;
-import java.text.DecimalFormat;
-import java.util.Arrays;
+import com.getcapacitor.JSObject;
 
 
+import org.bouncycastle.util.encoders.Hex;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.web3j.abi.FunctionEncoder;
+import org.web3j.abi.datatypes.Address;
+import org.web3j.abi.datatypes.Function;
+import org.web3j.abi.datatypes.generated.Uint256;
+import org.web3j.crypto.Credentials;
+import org.web3j.crypto.Keys;
+import org.web3j.crypto.RawTransaction;
+import org.web3j.crypto.TransactionEncoder;
 import org.web3j.protocol.Web3j;
-
+import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.request.Transaction;
 import org.web3j.protocol.core.methods.response.EthCall;
 import org.web3j.protocol.core.methods.response.EthEstimateGas;
 import org.web3j.protocol.core.methods.response.EthGasPrice;
-import org.web3j.protocol.http.HttpService;
-import org.web3j.crypto.Credentials;
-import org.web3j.crypto.RawTransaction;
-import org.web3j.crypto.TransactionEncoder;
-import org.web3j.protocol.core.methods.response.EthSendTransaction;
 import org.web3j.protocol.core.methods.response.EthGetTransactionCount;
-import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.methods.response.EthSendTransaction;
+import org.web3j.protocol.http.HttpService;
 import org.web3j.utils.Numeric;
-import org.web3j.abi.FunctionEncoder;
-import org.web3j.abi.datatypes.Function;
-import org.web3j.abi.datatypes.Address;
-import org.web3j.abi.datatypes.generated.Uint256;
-import org.web3j.crypto.Keys;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.math.BigInteger;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HexFormat;
+import java.util.Scanner;
+import java.util.UUID;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 
 /**
  * This service class uses a static approach to serve the data (command and response data) of a
@@ -61,6 +89,12 @@ import java.util.concurrent.ExecutionException;
 
 public class HceCcEmulationServiceMastercard extends HostApduService {
 
+    private static final String TAG = "HCE_Service";
+
+
+    private static final int TIMEOUT = 10;  // Timeout in seconds
+    private final BlockingQueue<String> transactionQueue = new ArrayBlockingQueue<>(1);
+
     // this is a static approach to serve the byte arrays to the service
     private static final String BASE_RPC_URL = "https://mainnet.base.org";  // Replace with your Base RPC URL
     private static final BigInteger GAS_LIMIT = BigInteger.valueOf(10000); // Higher gas limit for token transfers
@@ -73,11 +107,11 @@ public class HceCcEmulationServiceMastercard extends HostApduService {
 
     // Note: the responses does not include the 0x9000h terminator
     private static final byte[] SELECT_PPSE_COMMAND = hexStringToByteArray("00a404000e325041592e5359532e444446303100");
-    private static final byte[] SELECT_PPSE_RESPONSE = hexStringToByteArray("6f3c840e325041592e5359532e4444463031a52abf0c2761254f07A000000004101050104465626974204d6173746572436172648701019f0a0400010101");
+    private static final byte[] SELECT_PPSE_RESPONSE = hexStringToByteArray("6f3c840e325041592e5359532e4444463031a52abf0c2761254f07a000000004101050104465626974204d6173746572436172648701019f0a0400010101");
     private static final byte[] READ_PPSE_RECORD_RESPONSE = hexStringToByteArray("702B61294F08A000000004101001500A4D43454E4742524742508701019F120D6D6320656E2067627220676270");
 
 
-    private static final byte[] SELECT_AID_COMMAND = hexStringToByteArray("00a4040007A000000004101000");
+    private static final byte[] SELECT_AID_COMMAND = hexStringToByteArray("00a4040007a000000004101000");
     private static final byte[] SELECT_AID_RESPONSE = hexStringToByteArray("6F3B8407A0000000041010A530500A4D43454E4742524742505F2D02656E8701019F1101019F120D6D6320656E2067627220676270BF0C059F4D020B0A");
 
     // this needs to be dynamic as the response from the real NFC reader is not predictable (e.g. different amounts)
@@ -86,14 +120,14 @@ public class HceCcEmulationServiceMastercard extends HostApduService {
     private static final byte[] GET_PROCESSING_OPTONS_COMMAND_READER = hexStringToByteArray("80A80000028300");
     private static final byte[] GET_PROCESSING_OPTONS_RESPONSE = hexStringToByteArray("771682025880941008010100100101011801040020010200");
 
-    private static final byte[] READ_FILE_08_01_COMMAND = hexStringToByteArray("00B2010C");
-    private static final byte[] READ_FILE_08_01_RESPONSE = hexStringToByteArray("70649F6C0200019F62060000003800009F630600000000E0E0562542353431333333303038393039393939395E202F5E323830323230313030303030303030309F6401059F6502000E9F660207F09F6B114111110003920001D2802206043950169F9F670103");
+    private static final byte[] READ_FILE_08_01_COMMAND = hexStringToByteArray("00B2010C00");
+    private static final byte[] READ_FILE_08_01_RESPONSE = hexStringToByteArray("70649F6C0200019F62060000003800009F630600000000E0E0562542353431333333303038393039393939395E202F5E323830323230313030303030303030309F6401059F6502000E9F660207F09F6B115413330089099999D2802206043950169F9F670103");
 
     private static final byte[] READ_FILE_10_01_COMMAND = hexStringToByteArray("00B2011400");
-    private static final byte[] READ_FILE_10_01_RESPONSE = hexStringToByteArray("70225A0841111100039200019F0D05CC000000009F0E0500000000009F0F05CC00000000");
+    private static final byte[] READ_FILE_10_01_RESPONSE = hexStringToByteArray("70225A0854133300890999999F0D05CC000000009F0E0500000000009F0F05CC00000000");
 
     private static final byte[] READ_FILE_20_01_COMMAND = hexStringToByteArray("00B2011C00");
-    private static final byte[] READ_FILE_20_01_RESPONSE = hexStringToByteArray("70817E5F3401215F280208269F4202082657114111110003920001D2802206043950169F5F2002202F5F24032802295F25031701018C249F02069F03069F1A0295055F2A029A039C019F35019F45029F4C089F34039F21039F7C148D0C910A8A0295059F37049F4C088E0C000000000000000042031F039F0702FFC09F08020002");
+    private static final byte[] READ_FILE_20_01_RESPONSE = hexStringToByteArray("70817E5F3401215F280208269F4202082657115413330089099999D2802206043950169F5F2002202F5F24032802295F25031701018C249F02069F03069F1A0295055F2A029A039C019F35019F45029F4C089F34039F21039F7C148D0C910A8A0295059F37049F4C088E0C000000000000000042031F039F0702FFC09F08020002");
 
     private static final byte[] READ_FILE_20_02_COMMAND = hexStringToByteArray("00B2021C00");
     private static final byte[] READ_FILE_20_02_RESPONSE = hexStringToByteArray("70118F01FA9F4A01829F3201039204D3524107");
@@ -118,13 +152,23 @@ public class HceCcEmulationServiceMastercard extends HostApduService {
     private static final byte[] GET_CHALLENGE_RESPONSE = hexStringToByteArray("0102030405060708");
 
 
-
-    private static final byte[] GENERATE_AC= hexStringToByteArray ("80AE");
+    private static final byte[] GENERATE_AC = hexStringToByteArray("80AE");
     //80AE40002F00000010000000000000000000000000000978090730218A57CEFC16EBFE25BA3B61E3E62B141E8C8BC89B72D4140D
 
 
-
     private static final Logger log = LoggerFactory.getLogger(HceCcEmulationServiceMastercard.class);
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        // Example of sending a broadcast with data
+        Intent broadcastIntent = new Intent("com.yourapp.SHOW_TOAST");
+        broadcastIntent.putExtra("message", "Payment Successful");
+        broadcastIntent.putExtra("details", "Payment of amount has been processed");
+        sendBroadcast(broadcastIntent);
+
+        return START_NOT_STICKY;
+    }
+
 
     @Override
     public byte[] processCommandApdu(byte[] commandApdu, Bundle bundle) {
@@ -234,31 +278,191 @@ public class HceCcEmulationServiceMastercard extends HostApduService {
                 Arrays.equals(Arrays.copyOfRange(commandApdu, 0, GENERATE_AC.length), GENERATE_AC)) {
             // commandApdu begins with GENERATE_AC
 
-        // step 08
+            // step 08
 
             sendMessageToActivity("generate AC", bytesToHexNpe(commandApdu));
 
             try {
-                String transactionReceipt=sendTransactionToWeb3 (commandApdu);
-                sendMessageToActivityWithHash("Transaction Sent " , transactionReceipt , transactionReceipt);
+                byte[] apduData = Arrays.copyOfRange(commandApdu, 5, commandApdu.length);
 
 
+                String amount = new BigInteger(Utils.bytesToHexNpe(Arrays.copyOfRange(apduData, 0, 6))).toString();
 
 
-                byte[] GENERATE_AC_RESPONSE= hexStringToByteArray ("77379F2701809F3602003A9F26088A63693BBF445EF29F1020"+transactionReceipt );
+                String transactionId = handleNFCTransaction(amount);
+                byte[] generateAcResponse = hexStringToByteArray("77379F2701809F3602003A9F26088A63693BBF445EF29F1020");
+
+// Get the SHA-1 hash as a byte array
+                byte[] hashBytes = hashUUID(transactionId);
+
+// Merge both byte arrays
+                byte[] GENERATE_AC_RESPONSE = new byte[generateAcResponse.length + hashBytes.length];
+                System.arraycopy(generateAcResponse, 0, GENERATE_AC_RESPONSE, 0, generateAcResponse.length);
+                System.arraycopy(hashBytes, 0, GENERATE_AC_RESPONSE, generateAcResponse.length, hashBytes.length);
                 return concatenateByteArrays(GENERATE_AC_RESPONSE, RESPONSE_OK_SW);
             } catch (Exception e) {
-                return  RESPONSE_SECURITY_SW;
+                return RESPONSE_SECURITY_SW;
             }
 
-
         }
+
 
         sendMessageToActivity("raw apdu command", bytesToHexNpe(commandApdu));
 
 
         // in any other case response an 'OK'
         return RESPONSE_OK_SW;
+    }
+
+    public static byte[] hashUUID(String uuid) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            return digest.digest(uuid.getBytes(StandardCharsets.UTF_8)); // Returns raw byte array
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("SHA-1 algorithm not available", e);
+        }
+    }
+
+    public String handleNFCTransaction(String amount) throws ExecutionException, InterruptedException {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Future<String> future = executorService.submit(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                try {
+                    String accessToken = getTinkOAuthTokenForPayment();
+
+                    System.out.println("Token generated: " + accessToken);
+
+                    String consentId = "e0c2e9df-11ad-43b9-925e-6de8f1d4d63d";
+
+                    if (amount == null || amount.isEmpty()) {
+                        throw new IllegalArgumentException("Amount is required for the transaction.");
+                    }
+
+                    String transactionId = createTinkPayment(accessToken, amount, consentId);
+
+                    if (transactionId.isEmpty()) {
+                        throw new RuntimeException("Payment failed with status");
+                    }
+
+
+                    System.out.println("Transaction ID: " + transactionId);
+
+
+                    return transactionId;
+                } catch (Exception e) {
+                    System.err.println("Payment error: " + e.getMessage());
+                    return null;
+                }  // Perform the network request in the background
+            }
+        });
+
+        String transactionId= future.get();
+        setPaymentAmount(amount);
+        setShowPaymentSuccess(true);
+        this.sendTransactionCompletionBroadcast(amount);
+        return transactionId;
+    }
+
+
+private static String getTinkOAuthTokenForPayment() throws IOException {
+    String url = "https://api.tink.com/api/v1/oauth/token";
+    String clientId = "e5ca99078f154a58854f5505aebfc6ac";
+    String clientSecret = "2c895e1d757c4377b57be9076e24d084";
+    String grantType = "client_credentials";
+    String scope = "mandate-payments,mandate-payments:readonly";
+
+    try {
+        URL apiUrl = new URL(url);
+        HttpURLConnection connection = (HttpURLConnection) apiUrl.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        connection.setRequestProperty("Accept", "application/json");
+        connection.setDoOutput(true);
+
+        String data = "client_id=" + clientId + "&client_secret=" + clientSecret +
+                "&grant_type=" + grantType + "&scope=" + scope;
+
+        try (OutputStream os = connection.getOutputStream()) {
+            byte[] input = data.getBytes("utf-8");
+            os.write(input, 0, input.length);
+        }
+
+        int responseCode = connection.getResponseCode();
+        StringBuilder response = new StringBuilder();
+        try (Scanner scanner = new Scanner(connection.getInputStream())) {
+            while (scanner.hasNext()) {
+                response.append(scanner.nextLine());
+            }
+        }
+
+        if (responseCode == 200) {
+            JSONObject jsonResponse = new JSONObject(response.toString());
+            return jsonResponse.optString("access_token", null);        } else {
+            System.out.println("Error: " + responseCode);
+            return null;
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+    }
+}
+
+private static String createTinkPayment(String accessToken, String amount, String consentId) throws IOException, JSONException {
+    URL url = new URL("https://api.tink.com/payment/v1/mandate-payments");
+    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+    conn.setRequestMethod("POST");
+    conn.setRequestProperty("Authorization", "Bearer " + accessToken);
+
+    byte[] key = new byte[16]; // 16 bytes = 128 bits
+    SecureRandom random = new SecureRandom();
+    random.nextBytes(key);
+    conn.setRequestProperty("Idempotency-Key", Hex.toHexString(key));
+    conn.setRequestProperty("Content-Type", "application/json");
+    conn.setDoOutput(true);
+
+    String jsonInputString = "{\"amount\":{\"currencyCode\":\"GBP\",\"value\":{\"scale\":\"2\",\"unscaledValue\":\"" + amount + "\"}},\"consentId\":\"" + consentId + "\",\"remittanceInformation\":{\"type\":\"REFERENCE\",\"value\":\"ReferenceString\"}}";
+    try (OutputStream os = conn.getOutputStream()) {
+        byte[] input = jsonInputString.getBytes("utf-8");
+        os.write(input, 0, input.length);
+    }
+
+    int status = conn.getResponseCode();
+    if (status == 201) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"))) {
+            StringBuilder response = new StringBuilder();
+            String responseLine;
+            while ((responseLine = br.readLine()) != null) {
+                response.append(responseLine.trim());
+            }
+            JSONObject jsonResponse = new JSONObject(response.toString());
+            String transactionId= jsonResponse.optString("id", null);
+            return transactionId; // Extract transaction ID properly
+        }
+    } else {
+
+        return new PaymentResponse(false, "").getTransactionId();
+    }
+
+
+
+}
+
+
+private static void setPaymentAmount(String amount) {
+    // Placeholder method
+}
+
+private static void setShowPaymentSuccess(boolean success) {
+    // Placeholder method
+}
+
+    private void sendTransactionCompletionBroadcast(String amount) {
+        // Once the transaction is finished, send a broadcast with the result
+        Intent broadcastIntent = new Intent("showToast");
+        broadcastIntent.putExtra("message", amount +"EURO Success");
+        broadcastIntent.putExtra("details", "Payment of amount has been processed successfully.");
+        sendBroadcast(broadcastIntent);
     }
     public static byte[] hexStringToByteArray(String hex) {
         int length = hex.length();
@@ -282,15 +486,9 @@ public class HceCcEmulationServiceMastercard extends HostApduService {
      * @param data
      */
     private void sendMessageToActivity(String msg, String data) {
-        Intent intent = new Intent("transactions");
-        intent.setPackage(getPackageName());
-        // You can also include some extra data.
-        intent.putExtra("Message", msg);
-        intent.putExtra("Data", data);
-        Context context = this;
-        LocalBroadcastManager.getInstance(this.getBaseContext()).sendBroadcast(intent);
+       System.out.println(msg +  data);
+       // sendBroadcast(intent); // Use sendBroadcast instead of LocalBroadcastManager
     }
-
 
     private void sendMessageToActivityWithHash(String msg, String data , String hash ) {
         Intent intent = new Intent("transactions");
@@ -301,7 +499,7 @@ public class HceCcEmulationServiceMastercard extends HostApduService {
 
         intent.putExtra("Hash" , hash );
         Context context = this;
-        LocalBroadcastManager.getInstance(this.getBaseContext()).sendBroadcast(intent);
+       sendBroadcast(intent);
     }
 
 

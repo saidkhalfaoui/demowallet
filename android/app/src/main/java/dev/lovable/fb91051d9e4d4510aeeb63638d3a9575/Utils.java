@@ -1,4 +1,4 @@
-package de.androidcrypto.android_hce_emulate_a_creditcard;
+package dev.lovable.fb91051d9e4d4510aeeb63638d3a9575;
 
 import static android.content.Context.VIBRATOR_SERVICE;
 
@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
