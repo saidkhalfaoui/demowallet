@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Wallet Dashboard</string>
+    <string name="title_activity_main">Wallet Dashboard</string>
+    <string name="package_name">dev.lovable.fb91051d9e4d4510aeeb63638d3a9575</string>
+    <string name="custom_url_scheme">dev.lovable.fb91051d9e4d4510aeeb63638d3a9575</string>
+
+
+    <string name="header_write">This is a Demo NFC Crypto Wallet </string>
+    <string name="description_write">The NFC wallet uses USDC and runs on BaseChain </string>
+
+    <string name="servicedesc">HCE Service CreditCard</string>
+    <string name="aiddescription">HCE AID Description</string>
+
+    <!-- select PPSE 2PAY.SYS.DDF01 -->
+    <string name="hcePpse">325041592E5359532E4444463031</string>
+    <!-- visa credit or debit card -->
+    <string name="aidVisaCard">A0000000031010</string>
+    <!-- mastercard credit or debit card -->
+    <string name="aidMastercard">A0000000041010</string>
+    <string name="hce_service_log">Waiting for transaction data</string>
+
+</resources>
